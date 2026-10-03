@@ -100,9 +100,12 @@
         </div>
 
         <!-- PAGE 4: VIDEO FINAL -->
-        <div id="page4" class="card-page hidden-page">
-            <!-- Muted here stops the phone browser from cutting out your background song track -->
-            <video id="cardVideo" src="video.mp4" loop playsinline muted preload="auto"></video>
+        <div id="page4" class="card-page hidden-page" style="background-color: #fff;">
+            <!-- Added specific hardware attributes to force display rendering on mobile -->
+            <video id="cardVideo" loop playsinline muted preload="metadata" style="width:100%; height:100%; display:block;">
+                <source src="video.mp4" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
         </div>
 
     </div>
@@ -123,29 +126,26 @@
             const hint = document.getElementById('hintBtn');
 
             if (currentStep === 1) {
-                // Front -> Middle
-                music.play().catch(e => console.log("Audio kickstart:", e));
+                music.play().catch(e => console.log("Audio playback click handled", e));
                 p1.className = "card-page hidden-page";
                 p2.className = "card-page active-page";
                 hint.innerText = "pencet lagi";
                 currentStep = 2;
             } else if (currentStep === 2) {
-                // Middle -> Inside
                 p2.className = "card-page hidden-page";
                 p3.className = "card-page active-page";
                 hint.innerText = "lagi";
                 currentStep = 3;
             } else if (currentStep === 3) {
-                // Inside -> Video
                 p3.className = "card-page hidden-page";
                 p4.className = "card-page active-page";
                 hint.innerText = "hehe love u";
                 
-                // Force video loop to spin up without interrupting background audio
-                video.play().catch(e => console.log("Video track playback handled:", e));
+                // Force a heavy canvas reload trick for mobile render cycles
+                video.load();
+                video.play().catch(e => console.log("Video auto play handled", e));
                 currentStep = 4;
             } else {
-                // Reset loop back to cover
                 video.pause();
                 video.currentTime = 0;
                 p4.className = "card-page hidden-page";
