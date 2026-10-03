@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Open Your Card</title>
+    <style>
+        * { box-sizing: border-box; }
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: #f7ede2;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            overflow: hidden;
+        }
+
+        /* Card Container with 3D Perspective */
+        .card-container {
+            width: 340px;
+            height: 480px;
+            perspective: 1000px;
+            cursor: pointer;
+        }
+
+        .card-inner {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            transform-style: preserve-3d;
+            transition: transform 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.15);
+            border-radius: 15px;
+        }
+
+        /* Trigger class applied on tap */
+        .card-inner.is-opened {
+            transform: rotateY(180deg);
+        }
+
+        /* Front and Back Sides */
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 15px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            background-color: #fff;
+        }
+
+        /* Front Styling (Cover Image + Invitation) */
+        .card-front {
+            z-index: 2;
+            background: #fdf8f5;
+            padding: 20px;
+        }
+        
+        .card-front img {
+            width: 100%;
+            height: 80%;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        .open-btn {
+            margin-top: 15px;
+            padding: 12px 30px;
+            background: #f28482;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: bold;
+            box-shadow: 0 5px 15px rgba(242, 132, 130, 0.4);
+            animation: pulse 2s infinite;
+        }
+
+        /* Back Styling (Inside Image) */
+        .card-back {
+            transform: rotateY(180deg);
+            background: #fff;
+            padding: 20px;
+        }
+
+        .card-back img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Background Audio File -->
+    <audio id="bgMusic" src="song.mp3" loop preload="auto"></audio>
+
+    <div class="card-container" onclick="openCard()">
+        <div class="card-inner" id="card">
+            
+            <!-- FRONT SIDE OF THE CARD -->
+            <div class="card-front">
+                <img src="front.png" alt="Card Cover">
+                <button class="open-btn">Tap to Open ✉️</button>
+            </div>
+
+            <!-- BACK/INSIDE OF THE CARD -->
+            <div class="card-back">
+                <img src="inside.png" alt="Card Inside">
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        function openCard() {
+            const card = document.getElementById('card');
+            const music = document.getElementById('bgMusic');
+            
+            // 1. Flip the card open
+            card.classList.add('is-opened');
+            
+            // 2. Play the MP3 music immediately on user interaction
+            music.play().catch(error => {
+                console.log("Audio playback failed to trigger automatically:", error);
+            });
+        }
+    </script>
+</body>
+</html>
